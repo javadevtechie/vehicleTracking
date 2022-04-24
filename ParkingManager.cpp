@@ -36,7 +36,7 @@ std::list<Vehicle> ParkingManager::dropVehicle(Vehicle v, std::list<Vehicle> v_l
 }
 std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> vlist)
 {
-
+std::list<Vehicle> remv;
     for (Vehicle inputVehicle : vlist)
     {
         bool exit=false;
@@ -52,27 +52,22 @@ std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> v
                 veh.SetentryTime(inputVehicle.GetentryTime());
                 veh.Setcost(cost);
                 costCalculatedVeh.push_front(veh);
-                //vlist= parking.dropVehicle(inputVehicle,vlist);
-                std::list<Vehicle> temporary;
-                for (Vehicle v : vlist)
-                {
-                    if(inputVehicle.Getnumber().compare(v.Getnumber())!=0)
-                    {
-                        temporary.push_front(inputVehicle);
-                    }
 
-                }
-
-                std::cout<<vlist.size()<<std::endl;
             }
         }
+        else {
+            remv.push_back(inputVehicle);
+            std::cout<<inputVehicle.Getnumber()<<std::endl;
+
+        }
     }
-    return inputVehicleList;
+    return remv;
 }
 void ParkingManager::updateList(std::string filePath)
 {
 
     std::list<Vehicle> resolveInputVehicleList=  parking.getUnresolvedVehicleList(inputVehicleList);
+    std::cout<<resolveInputVehicleList.size()<<"\t";
     bool exit;
     if(resolveInputVehicleList.size()>0)
     {
@@ -116,7 +111,8 @@ void ParkingManager::updateList(std::string filePath)
     {
         std::cout<<dbVehicle.Getnumber()<<"\t";
         std::cout<<dbVehicle.GetentryTime()<<"\t";
-        std::cout<<dbVehicle.GetexitTime()<<"\t"<<std::endl;
+        std::cout<<dbVehicle.GetexitTime()<<"\t";
+         std::cout<<dbVehicle.Getcost()<<"\t"<<std::endl;
 
     }
 
