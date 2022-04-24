@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1650805257 source:c:\projects\client\cw-2\main.cpp
+	<iostream>
+	"ParkingManager.h"
+
+1650693695 c:\projects\client\cw-2\fileutil.h
+	<iostream>
+	"Vehicle.h"
+	<list>
+	<vector>
+
+1650807118 source:c:\projects\client\cw-2\fileutil.cpp
+	"FileUtil.h"
+	<sstream>
+	<iostream>
+	"Vehicle.h"
+	<list>
+	<fstream>
+	<vector>
+
+1650806749 source:c:\projects\client\cw-2\parkingmanager.cpp
+	"ParkingManager.h"
+	"FileUtil.h"
+	<iostream>
+	<vector>
+	<list>
+	<iomanip>
+
+1650803881 c:\projects\client\cw-2\parkingmanager.h
+	<iostream>
+	"FileUtil.h"
+	<list>
+
+1650440359 source:c:\projects\client\cw-2\vehicle.cpp
+	"Vehicle.h"
+
+1650797862 c:\projects\client\cw-2\vehicle.h
+	<iostream>
+
