@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1650963358 source:c:\projects\client\cw-2\main.cpp
+1650976987 source:c:\projects\client\cw-2\main.cpp
 	<iostream>
 	"ParkingManager.h"
 	<map>
@@ -19,7 +19,7 @@
 	<fstream>
 	<vector>
 
-1650974131 source:c:\projects\client\cw-2\parkingmanager.cpp
+1650977843 source:c:\projects\client\cw-2\parkingmanager.cpp
 	"ParkingManager.h"
 	"FileUtil.h"
 	<iostream>
@@ -27,8 +27,10 @@
 	<list>
 	<iomanip>
 	<map>
+	<fstream>
+	<string>
 
-1650959150 c:\projects\client\cw-2\parkingmanager.h
+1650976510 c:\projects\client\cw-2\parkingmanager.h
 	<iostream>
 	"FileUtil.h"
 	<list>

@@ -5,42 +5,22 @@
 #include <list>
 #include <iomanip>
 #include <map>
-
+#include <fstream>
+#include <string>
 FileUtil file;
-std::list<Vehicle> vehicleList;
-std::list<Vehicle> inputVehicleList;
+
 std::list<Vehicle> costCalculatedVeh;
 ParkingManager parking;
 ParkingManager::ParkingManager()
 {
 
-    vehicleList= file.getListOfVehicle("vehicle.txt");
-    inputVehicleList= file.getListOfVehicle("newvehicle.txt");
 }
 
-std::list<Vehicle> ParkingManager::dropVehicle(Vehicle v, std::list<Vehicle> v_list)
-{
-    std::list<Vehicle> temporary;
-    for (Vehicle inputVehicle : v_list)
-    {
-        if(inputVehicle.Getnumber().compare(v.Getnumber())!=0)
-        {
-            temporary.push_front(inputVehicle);
-        }
-
-    }
-    for (Vehicle dbVehicle :temporary )
-    {
-        std::cout<<dbVehicle.Getnumber()<<std::endl;
-    }
-    return temporary;
-}
 std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> vlist)
 {
     std::list<Vehicle> remv;
     for (Vehicle inputVehicle : vlist)
     {
-        bool exit=false;
         if(inputVehicle.GetexitTime().compare("-")!=0  && inputVehicle.GetentryTime().compare("-")!=0)
         {
             Vehicle veh;
@@ -59,7 +39,7 @@ std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> v
         else
         {
             remv.push_back(inputVehicle);
-            std::cout<<inputVehicle.Getnumber()<<std::endl;
+            //std::cout<<inputVehicle.Getnumber()<<std::endl;
 
         }
     }
@@ -67,24 +47,18 @@ std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> v
 }
 void ParkingManager::updateList(std::string filePath)
 {
-
+    std::list<Vehicle> vehicleList=file.getListOfVehicle("vehicle.txt");
+    std::list<Vehicle> inputVehicleList= file.getListOfVehicle(filePath);
     std::list<Vehicle> resolveInputVehicleList=  parking.getUnresolvedVehicleList(inputVehicleList);
-    std::cout<<resolveInputVehicleList.size()<<"\t";
-
     std::list<Vehicle> temp=vehicleList;
     temp.insert(temp.end(), resolveInputVehicleList.begin(), resolveInputVehicleList.end());
 
     std::map<std::string, Vehicle> vMap;
-    std::cout<<vMap.size()<<std::endl;
+    //std::cout<<vMap.size()<<std::endl;
     for (Vehicle iv : temp)
     {
         vMap[iv.Getnumber()] = iv;
-
     }
-    std::cout<<vMap.size()<<std::endl;
-
-
-
     if(resolveInputVehicleList.size()>0)
     {
         for (Vehicle inputVehicle : resolveInputVehicleList)
@@ -93,7 +67,6 @@ void ParkingManager::updateList(std::string filePath)
             {
                 if(inputVehicle.Getnumber().compare(dbVehicle.Getnumber())==0)
                 {
-
                     if(inputVehicle.GetexitTime().compare("-")!=0  && dbVehicle.GetentryTime().compare("-")!=0)
                     {
                         Vehicle veh;
@@ -101,11 +74,6 @@ void ParkingManager::updateList(std::string filePath)
                         if(parkingTime>-1)
                         {
                             double cost = file.getPartkingCost(parkingTime);
-                            std::cout<<"VehicleNo:";
-                            std::cout<<dbVehicle.Getnumber()<<std::endl;
-                            std::cout<<"parkingTime--";
-                            std::cout<<parkingTime<<std::endl;
-                            std::cout<<cost<<std::endl;
                             veh=inputVehicle;
                             veh.SetexitTime(inputVehicle.GetexitTime());
                             veh.SetentryTime(dbVehicle.GetentryTime());
@@ -119,19 +87,34 @@ void ParkingManager::updateList(std::string filePath)
 
         }
     }
-    std::cout<<vMap.size()<<"------------------\t"<<std::endl;
+
+    std::ofstream dbFile,inputFile;
+    dbFile.open ("vehicle.txt");
+
+
+    std::ofstream inputfile;
+    inputfile.open(filePath, std::ofstream::out | std::ofstream::trunc);
+    inputfile.close();
+
+   std::ofstream fout;
+
+     fout.open ("archive.txt",std::ios::app);
+
     for (auto& x: vMap)
     {
-        std::cout << x.first << ": " << x.second.Getnumber() << '\n';
+        std::cout << x.second.Getnumber()+"|"+x.second.GetentryTime()+"|"+x.second.GetexitTime()<<std::endl;
+        dbFile << x.second.Getnumber()+"|"+x.second.GetentryTime()+"|"+x.second.GetexitTime()+"\n";
+       // fout<<" tutorials point";
     }
-    std::cout<<"-------------------------------------------"<<std::endl;
+    dbFile.close();
     for (Vehicle dbVehicle :costCalculatedVeh )
     {
         std::cout<<dbVehicle.Getnumber()<<"\t";
         std::cout<<dbVehicle.GetentryTime()<<"\t";
         std::cout<<dbVehicle.GetexitTime()<<"\t";
         std::cout<<dbVehicle.Getcost()<<"\t"<<std::endl;
-
+      // ost << dbVehicle.Getnumber()+"|"+dbVehicle.GetentryTime()+"|"+dbVehicle.GetexitTime()+"|"+dbVehicle.Getcost();
+       fout << dbVehicle.Getnumber() +"|"+ dbVehicle.GetentryTime() +"|"+ dbVehicle.GetexitTime() +"|"+std::to_string(dbVehicle.Getcost())+"\n";
     }
-
+    fout.close();
 }
