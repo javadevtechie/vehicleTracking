@@ -7,7 +7,7 @@ class ParkingManager
 {
     public:
         ParkingManager();
-        void updateList(std::string filePath);
+        void updateList(std::string filePath,std::list<Vehicle> vehicles);
         std::list<Vehicle>  getUnresolvedVehicleList(std::list<Vehicle> vehicles);
 };
 

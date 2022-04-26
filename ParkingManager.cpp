@@ -39,20 +39,26 @@ std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> v
         else
         {
             remv.push_back(inputVehicle);
-            //std::cout<<inputVehicle.Getnumber()<<std::endl;
-
         }
     }
     return remv;
 }
-void ParkingManager::updateList(std::string filePath)
+void ParkingManager::updateList(std::string filePath,std::list<Vehicle> vehicles)
 {
+    std::list<Vehicle> inputVehicleList;
+    if(filePath.length()<1)
+    {
+        inputVehicleList=vehicles;
+    }
+    else
+    {
+        inputVehicleList= file.getListOfVehicle(filePath);
+    }
     std::list<Vehicle> vehicleList=file.getListOfVehicle("vehicle.txt");
-    std::list<Vehicle> inputVehicleList= file.getListOfVehicle(filePath);
+
     std::list<Vehicle> resolveInputVehicleList=  parking.getUnresolvedVehicleList(inputVehicleList);
     std::list<Vehicle> temp=vehicleList;
     temp.insert(temp.end(), resolveInputVehicleList.begin(), resolveInputVehicleList.end());
-
     std::map<std::string, Vehicle> vMap;
     //std::cout<<vMap.size()<<std::endl;
     for (Vehicle iv : temp)
@@ -96,15 +102,15 @@ void ParkingManager::updateList(std::string filePath)
     inputfile.open(filePath, std::ofstream::out | std::ofstream::trunc);
     inputfile.close();
 
-   std::ofstream fout;
+    std::ofstream fout;
 
-     fout.open ("archive.txt",std::ios::app);
+    fout.open ("archive.txt",std::ios::app);
 
     for (auto& x: vMap)
     {
         std::cout << x.second.Getnumber()+"|"+x.second.GetentryTime()+"|"+x.second.GetexitTime()<<std::endl;
         dbFile << x.second.Getnumber()+"|"+x.second.GetentryTime()+"|"+x.second.GetexitTime()+"\n";
-       // fout<<" tutorials point";
+        // fout<<" tutorials point";
     }
     dbFile.close();
     for (Vehicle dbVehicle :costCalculatedVeh )
@@ -113,8 +119,8 @@ void ParkingManager::updateList(std::string filePath)
         std::cout<<dbVehicle.GetentryTime()<<"\t";
         std::cout<<dbVehicle.GetexitTime()<<"\t";
         std::cout<<dbVehicle.Getcost()<<"\t"<<std::endl;
-      // ost << dbVehicle.Getnumber()+"|"+dbVehicle.GetentryTime()+"|"+dbVehicle.GetexitTime()+"|"+dbVehicle.Getcost();
-       fout << dbVehicle.Getnumber() +"|"+ dbVehicle.GetentryTime() +"|"+ dbVehicle.GetexitTime() +"|"+std::to_string(dbVehicle.Getcost())+"\n";
+        // ost << dbVehicle.Getnumber()+"|"+dbVehicle.GetentryTime()+"|"+dbVehicle.GetexitTime()+"|"+dbVehicle.Getcost();
+        fout << dbVehicle.Getnumber() +"|"+ dbVehicle.GetentryTime() +"|"+ dbVehicle.GetexitTime() +"|"+std::to_string(dbVehicle.Getcost())+"\n";
     }
     fout.close();
 }
