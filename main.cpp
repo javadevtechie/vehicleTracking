@@ -4,12 +4,19 @@
 #include <fstream>
 #include "Vehicle.h"
 #include <list>
+#include <iostream>
+#include <iomanip>
 using namespace std;
 
 int main(int argc, char *argv[])
 {
 ParkingManager parkingManager;
 
+
+    cout << "|-" << setfill('*') << setw(24) << "-|" <<endl;
+    cout << setfill(' ') << setw(12) << left << "|Fahrenheit|" <<  setfill(' ');
+    cout << setw(14) << right << "|Celsius |" <<  endl;
+    cout << "|-" <<  setfill('*') << setw(24) << "-|" << endl;
     //cout<< argv[1].length();
     if (&argv[1][0] == '\0')
     {
