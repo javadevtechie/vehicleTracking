@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <iomanip>
+#include <map>
 
 FileUtil file;
 std::list<Vehicle> vehicleList;
@@ -36,7 +37,7 @@ std::list<Vehicle> ParkingManager::dropVehicle(Vehicle v, std::list<Vehicle> v_l
 }
 std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> vlist)
 {
-std::list<Vehicle> remv;
+    std::list<Vehicle> remv;
     for (Vehicle inputVehicle : vlist)
     {
         bool exit=false;
@@ -55,7 +56,8 @@ std::list<Vehicle> remv;
 
             }
         }
-        else {
+        else
+        {
             remv.push_back(inputVehicle);
             std::cout<<inputVehicle.Getnumber()<<std::endl;
 
@@ -68,17 +70,30 @@ void ParkingManager::updateList(std::string filePath)
 
     std::list<Vehicle> resolveInputVehicleList=  parking.getUnresolvedVehicleList(inputVehicleList);
     std::cout<<resolveInputVehicleList.size()<<"\t";
-    bool exit;
+
+    std::list<Vehicle> temp=vehicleList;
+    temp.insert(temp.end(), resolveInputVehicleList.begin(), resolveInputVehicleList.end());
+
+    std::map<std::string, Vehicle> vMap;
+    std::cout<<vMap.size()<<std::endl;
+    for (Vehicle iv : temp)
+    {
+        vMap[iv.Getnumber()] = iv;
+
+    }
+    std::cout<<vMap.size()<<std::endl;
+
+
+
     if(resolveInputVehicleList.size()>0)
     {
         for (Vehicle inputVehicle : resolveInputVehicleList)
         {
             for (Vehicle dbVehicle :vehicleList )
             {
-                exit=false;
                 if(inputVehicle.Getnumber().compare(dbVehicle.Getnumber())==0)
                 {
-                    exit=true;
+
                     if(inputVehicle.GetexitTime().compare("-")!=0  && dbVehicle.GetentryTime().compare("-")!=0)
                     {
                         Vehicle veh;
@@ -96,15 +111,18 @@ void ParkingManager::updateList(std::string filePath)
                             veh.SetentryTime(dbVehicle.GetentryTime());
                             veh.Setcost(cost);
                             costCalculatedVeh.push_front(veh);
+                            vMap.erase(dbVehicle.Getnumber());
                         }
                     }
                 }
             }
-            if(!exit)
-            {
-                vehicleList.push_front(inputVehicle);
-            }
+
         }
+    }
+    std::cout<<vMap.size()<<"------------------\t"<<std::endl;
+    for (auto& x: vMap)
+    {
+        std::cout << x.first << ": " << x.second.Getnumber() << '\n';
     }
     std::cout<<"-------------------------------------------"<<std::endl;
     for (Vehicle dbVehicle :costCalculatedVeh )
@@ -112,7 +130,7 @@ void ParkingManager::updateList(std::string filePath)
         std::cout<<dbVehicle.Getnumber()<<"\t";
         std::cout<<dbVehicle.GetentryTime()<<"\t";
         std::cout<<dbVehicle.GetexitTime()<<"\t";
-         std::cout<<dbVehicle.Getcost()<<"\t"<<std::endl;
+        std::cout<<dbVehicle.Getcost()<<"\t"<<std::endl;
 
     }
 
