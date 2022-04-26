@@ -45,14 +45,15 @@ std::list<Vehicle> ParkingManager::getUnresolvedVehicleList(std::list<Vehicle> v
 }
 void ParkingManager::updateList(std::string filePath,std::list<Vehicle> vehicles)
 {
+
     std::list<Vehicle> inputVehicleList;
-    if(filePath.length()<1)
-    {
-        inputVehicleList=vehicles;
-    }
-    else
+    if(filePath.length()>0)
     {
         inputVehicleList= file.getListOfVehicle(filePath);
+    }
+    else if(vehicles.size()>0)
+    {
+        inputVehicleList=vehicles;
     }
     std::list<Vehicle> vehicleList=file.getListOfVehicle("vehicle.txt");
 
@@ -96,29 +97,29 @@ void ParkingManager::updateList(std::string filePath,std::list<Vehicle> vehicles
 
     std::ofstream dbFile,inputFile;
     dbFile.open ("vehicle.txt");
-
-
     std::ofstream inputfile;
     inputfile.open(filePath, std::ofstream::out | std::ofstream::trunc);
     inputfile.close();
-
     std::ofstream fout;
-
     fout.open ("archive.txt",std::ios::app);
 
     for (auto& x: vMap)
     {
-        std::cout << x.second.Getnumber()+"|"+x.second.GetentryTime()+"|"+x.second.GetexitTime()<<std::endl;
+      //  std::cout << x.second.Getnumber()+"|"+x.second.GetentryTime()+"|"+x.second.GetexitTime()<<std::endl;
         dbFile << x.second.Getnumber()+"|"+x.second.GetentryTime()+"|"+x.second.GetexitTime()+"\n";
-        // fout<<" tutorials point";
     }
     dbFile.close();
+    std::cout<<"Vehicle No"<<"|\t";
+    std::cout<<"Entry Time"<<"|\t";
+    std::cout<<"Exit Time"<<"|\t";
+    std::cout<<"Charge"<<"|\t"<<std::endl;
     for (Vehicle dbVehicle :costCalculatedVeh )
     {
+
         std::cout<<dbVehicle.Getnumber()<<"\t";
-        std::cout<<dbVehicle.GetentryTime()<<"\t";
-        std::cout<<dbVehicle.GetexitTime()<<"\t";
-        std::cout<<dbVehicle.Getcost()<<"\t"<<std::endl;
+        std::cout<<dbVehicle.GetentryTime()<<"\t\t";
+        std::cout<<dbVehicle.GetexitTime();
+        std::cout<<"\t\t"<<dbVehicle.Getcost()<<std::endl;
         // ost << dbVehicle.Getnumber()+"|"+dbVehicle.GetentryTime()+"|"+dbVehicle.GetexitTime()+"|"+dbVehicle.Getcost();
         fout << dbVehicle.Getnumber() +"|"+ dbVehicle.GetentryTime() +"|"+ dbVehicle.GetexitTime() +"|"+std::to_string(dbVehicle.Getcost())+"\n";
     }

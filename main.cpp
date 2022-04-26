@@ -8,16 +8,20 @@
 #include <iomanip>
 using namespace std;
 
+//
+//int main(){
+//    cout << "|-" << setfill('*') << setw(100) << "-|" <<endl;
+//    cout  << setw(50)<< setfill(' ')  << left << "|Parking Management System|" <<  setfill(' ');
+//return 0;
+//
+//}
 int main(int argc, char *argv[])
 {
 ParkingManager parkingManager;
 
 
-    cout << "|-" << setfill('*') << setw(24) << "-|" <<endl;
-    cout << setfill(' ') << setw(12) << left << "|Fahrenheit|" <<  setfill(' ');
-    cout << setw(14) << right << "|Celsius |" <<  endl;
-    cout << "|-" <<  setfill('*') << setw(24) << "-|" << endl;
-    //cout<< argv[1].length();
+
+    std::list<Vehicle> vehicleList;
     if (&argv[1][0] == '\0')
     {
         std::string vehicleNumber,entryTime,exitTime;
@@ -31,7 +35,7 @@ ParkingManager parkingManager;
         vehicle.Setnumber(vehicleNumber);
         vehicle.SetentryTime(entryTime);
         vehicle.SetexitTime(exitTime);
-        std::list<Vehicle> vehicleList;
+
         vehicleList.push_back(vehicle);
         parkingManager.updateList("",vehicleList);
     }
@@ -41,7 +45,7 @@ ParkingManager parkingManager;
         if (infile.good())
         {
 
-
+        parkingManager.updateList(argv[1],vehicleList);
         }
         else
         {
